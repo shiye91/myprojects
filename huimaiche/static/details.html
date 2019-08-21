@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>商品详情</h1>
+<ul>
+    <li id="pic"></li>
+    <li id="cname"></li>
+    <li id="price"></li>
+    <li id="tid"></li>
+</ul>
+<script>
+   /* var str=location.search;//?....
+    console.log(str);
+    var cid=str.slice(str.lastIndexOf("=")+1);
+    console.log(cid);
+    var cid=location.search.slice(location.search.lastIndexOf("=")+1);
+    console.log(cid);*/
+
+//    var str=location.search;//?cid=12
+//   var arr=str.split("=");
+//   console.log(arr[1]);
+    var cid=location.search.split("=")[1];
+   console.log(cid);
+   //查看详情
+   function details(cid){
+       var xhr=new XMLHttpRequest();
+       xhr.onreadystatechange=function(){
+           if(xhr.readyState==4&&xhr.status==200){
+               console.log(JSON.parse(xhr.responseText));
+               var data=JSON.parse(xhr.responseText).data[0];
+               console.log(data);
+                pic.innerHTML=`<img src="img/${data.pic}">`;
+               price.innerHTML=data.price;
+               cname.innerHTML=data.cname;
+               tid.innerHTML=data.tid
+
+           }
+       };
+       xhr.open("get","/car/details/"+cid,true);
+       xhr.send(null)
+   }
+   details(cid);
+    //"Hello World".split('').reverse().join('')//DlroW olleH
+    //['H','e',"l","l","o",' ',...]
+</script>
+</body>
+</html>

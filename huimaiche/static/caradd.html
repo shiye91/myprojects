@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1>添加</h1>
+    汽车名称<input type="text" id="cname"/><br/>
+    汽车价格<input type="text" id="cprice"/><br/>
+    汽车图片<input type="text" id="cpic"/><br/>
+    汽车类别<input type="text" id="tid"/><br/>
+    <button onclick="add()">添加</button>
+    <script>
+        function add(){
+            var cn=cname.value,
+                cp=cprice.value,
+                cc=cpic.value,
+                t=tid.value;
+            if(cn==""){
+                cname.focus()
+            }
+            //创建异步对象
+            var xhr=new XMLHttpRequest();
+            //监听onreadystatechange事件
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4&&xhr.status==200){
+                    console.log(xhr.responseText);
+                }
+            };
+            //打开到服务器的连接
+            xhr.open("post","/car/add",true);
+            //设置请求头
+            xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            //发送数据
+            var msg=`cname=${cn}&cprice=${cp}&cpic=${cc}&tid=${t}`;
+            xhr.send(msg);
+        }
+    </script>
+</body>
+</html>

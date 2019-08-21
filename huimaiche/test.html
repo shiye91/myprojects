@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<select id="sel" onchange="getChange()">
+		<option value="1">lt8</option>
+		<option value="2">lt15</option>
+		<option value="3">lt30</option>
+		<option value="4">suv</option>
+	</select>
+	<table></table>
+	<script>
+		function getChange(){
+			var tid=sel.value;
+			console.log(tid);
+		}
+	</script>
+</body>
+</html>

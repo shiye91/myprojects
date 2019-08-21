@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <!--meta:vp-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <style>
+        table{
+            width:800px;
+            margin:auto;
+            border:1px solid #f00;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        td,th{
+            border:1px solid #f00
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center">
+        <h1>列表</h1>
+        <select onchange="getChange()" id="sel">
+            <option value="1">lt8</option>
+            <option value="2">lt15</option>
+            <option value="3">lt30</option>
+            <option value="4">suv</option>
+        </select>
+        <table>
+            <thead>
+               <tr>
+                   <th>图片</th>
+                   <th>价格</th>
+                   <th>名称</th>
+                   <th>操作</th>
+               </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+    <script>
+        function getChange(){
+            var tid=sel.value;
+//            console.log(tid);
+            loadData(tid);
+            return tid;
+        }
+        function loadData(tid){
+            //创建异步对象
+            var xhr=new XMLHttpRequest();
+            //监听onreadystatechange事件
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4&&xhr.status==200){
+//                    console.log(xhr.responseText);
+                    var data=JSON.parse(xhr.responseText);
+//                    console.log(data);
+//                    console.log(data.data);
+                    for(var i= 0,html="";i<data.data.length;i++){
+                        var lists=data.data[i];
+//                        console.log(lists);
+                        html+=`
+                       <tr>
+                          <td><img src="img/${lists.pic}" alt=""/></td>
+                          <td>${lists.price}</td>
+                          <td>${lists.cname}</td>
+                          <td>
+                            <a href="details.html?cid=${lists.cid}">详情</a>
+                            <a href="javascript:del(${lists.cid})">删除</a>
+                          </td>
+                       </tr>
+                    `
+                    }
+                    tbody.innerHTML=html;
+                }
+            };
+            //打开到服务器的连接
+            xhr.open("get","/car/list/"+tid,true);
+            xhr.send(null);
+        }
+        loadData(1);
+//        删除
+        function del(cid){
+          var xhr=new XMLHttpRequest();
+          xhr.onreadystatechange=function(){
+               if(xhr.readyState==4&&xhr.status==200){
+                   console.log(xhr.responseText);
+                   var data=JSON.parse(xhr.responseText);
+                   if(data.code==200){
+                       loadData(getChange())
+                   }
+               }
+          }
+            xhr.open("delete","/car/del/"+cid,true);
+            xhr.send(null);
+        }
+
+    </script>
+</body>
+</html>
